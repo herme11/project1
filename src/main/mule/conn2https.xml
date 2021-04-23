@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="865e4c25-28d4-41b2-b3fd-d9e117a57f83" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="4764021c-5222-4b70-9477-37d478a63470" >
+		<http:request-connection protocol="HTTPS" host="www.bankofamerica.com" port="443" >
+			<tls:context >
+				<tls:trust-store path="keystore/truststoreBOA.ts" password="123456" type="jks" insecure="true"/>
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+	<flow name="http2httpsFlow" doc:id="94959625-41b0-4e90-a99a-d862a28abdf7" >
+		<http:listener doc:name="Listener" doc:id="7330f8e3-efb6-4610-828f-7b571262a036" config-ref="HTTP_Listener_config" path="/callboa"/>
+		<http:request method="GET" doc:name="Request" doc:id="13e040f8-c11e-40f7-841f-1bba7532b671" config-ref="HTTP_Request_configuration" path="/"/>
+	</flow>
+</mule>
